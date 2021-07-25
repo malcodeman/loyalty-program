@@ -12,9 +12,11 @@ const defaultExport = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const { id } = req.query;
     const { properties } = req.body;
+    const pageId = Array.isArray(id) ? id[0] : id;
     const response = await notion.pages.update({
-      page_id: id,
+      page_id: pageId,
       properties,
+      archived: false,
     });
     return res.status(200).json(response);
   } catch (err) {
