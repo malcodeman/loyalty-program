@@ -23,6 +23,7 @@ export type PERKS = {
   }[];
 };
 export type USER = {
+  id: string;
   properties: {
     email: {
       title: {

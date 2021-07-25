@@ -1,6 +1,7 @@
 import { Box, Heading, Text, Tag, useColorModeValue } from "@chakra-ui/react";
 
 type props = {
+  onClick: (price: number) => void;
   name: string;
   description: string;
   type: string;
@@ -8,9 +9,15 @@ type props = {
 };
 
 function Perk(props: props) {
-  const { name, description, type, price } = props;
+  const { onClick, name, description, type, price, ...rest } = props;
   const bgColor = useColorModeValue("#fafafa", "#18191a");
   const isFixed = type === "Fixed";
+
+  function handleOnClick() {
+    if (!isFixed) {
+      onClick(price);
+    }
+  }
 
   function getHeading() {
     if (isFixed) {
@@ -21,10 +28,12 @@ function Perk(props: props) {
 
   return (
     <Box
+      onClick={handleOnClick}
       backgroundColor={bgColor}
       padding="4"
       cursor={isFixed ? "normal" : "pointer"}
       borderRadius="md"
+      {...rest}
     >
       <Heading as="h4" size="md" mb="1">
         {getHeading()}

@@ -1,5 +1,6 @@
 import { Box, Container, SimpleGrid } from "@chakra-ui/react";
 import * as R from "ramda";
+import React from "react";
 
 import { PERKS, USER } from "../types";
 import api from "../lib/api";
@@ -13,8 +14,35 @@ type props = {
 
 function Home(props: props) {
   const { perks, user } = props;
-  const balance = user.properties.balance.number;
+  const [balance, setBalance] = React.useState(user.properties.balance.number);
   const email = user.properties.email.title[0].plain_text;
+
+  async function handleBuyPerk(price: number) {
+    const nextBalance = balance - price;
+    const properties = {
+      balance: {
+        number: nextBalance,
+      },
+    };
+    const request = await fetch(`/api/pages/${user.id}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        properties,
+      }),
+    });
+    const content: {
+      properties: {
+        balance: {
+          number: number;
+        };
+      };
+    } = await request.json();
+    setBalance(content.properties.balance.number);
+  }
 
   return (
     <>
@@ -30,6 +58,7 @@ function Home(props: props) {
               const price = item.properties.price.number;
               return (
                 <Perk
+                  onClick={handleBuyPerk}
                   key={name}
                   name={name}
                   description={description}
