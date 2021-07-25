@@ -6,6 +6,11 @@ export type PERKS = {
           plain_text: string;
         }[];
       };
+      description: {
+        rich_text: {
+          plain_text: string;
+        }[];
+      };
       type: {
         select: {
           name: string;
@@ -16,4 +21,16 @@ export type PERKS = {
       };
     };
   }[];
+};
+export type USER = {
+  properties: {
+    email: {
+      title: {
+        plain_text: string;
+      }[];
+    };
+    balance: {
+      number: number;
+    };
+  };
 };
