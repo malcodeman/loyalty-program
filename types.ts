@@ -35,3 +35,15 @@ export type USER = {
     };
   };
 };
+export type SESSION = {
+  user: { email: string; image: string; name: string };
+};
+export type PROVIDERS = {
+  google: {
+    callbackUrl: string;
+    id: string;
+    name: string;
+    signinUrl: string;
+    type: string;
+  };
+};

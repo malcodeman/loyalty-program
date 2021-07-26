@@ -15,16 +15,18 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { LogOut, Sun, Moon } from "react-feather";
+import { signOut } from "next-auth/client";
 
 import utils from "../lib/utils";
 
 type props = {
   balance: number;
   email: string;
+  avatarImage: string;
 };
 
 function Header(props: props) {
-  const { balance, email } = props;
+  const { balance, email, avatarImage } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   const boxShadow = useColorModeValue(
     "rgba(0, 0, 0, 0.03) 0px 2px 0px 0px",
@@ -55,7 +57,7 @@ function Header(props: props) {
                   cursor="pointer"
                   size="md"
                   name="Dan Abrahmov"
-                  src="https://bit.ly/dan-abramov"
+                  src={avatarImage}
                 />
               </PopoverTrigger>
               <PopoverContent width="244px">
@@ -63,6 +65,7 @@ function Header(props: props) {
                   <Text>{email}</Text>
                   <Divider marginY="2" />
                   <Button
+                    onClick={() => signOut()}
                     justifyContent="flex-start"
                     isFullWidth
                     leftIcon={<LogOut />}
