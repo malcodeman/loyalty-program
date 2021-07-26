@@ -42,9 +42,33 @@ async function getUser(email: string) {
   }
 }
 
+async function getPage(pageId: string) {
+  try {
+    const response = await notion.pages.retrieve({ page_id: pageId });
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function updatePage(pageId: string, properties: {}) {
+  try {
+    const response = await notion.pages.update({
+      page_id: pageId,
+      properties,
+      archived: false,
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const defaultExport = {
   getPerks,
   getUser,
+  getPage,
+  updatePage,
 };
 
 export default defaultExport;

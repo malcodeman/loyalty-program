@@ -1,21 +1,24 @@
 import { Box, Heading, Text, Tag, useColorModeValue } from "@chakra-ui/react";
 
 type props = {
-  onClick: (price: number) => void;
+  onClick: (id: string, price: number) => void;
+  id: string;
   name: string;
   description: string;
   type: string;
   price: number;
+  isDisabled: boolean;
 };
 
 function Perk(props: props) {
-  const { onClick, name, description, type, price, ...rest } = props;
+  const { onClick, id, name, description, type, price, isDisabled, ...rest } =
+    props;
   const bgColor = useColorModeValue("#fafafa", "#18191a");
   const isFixed = type === "Fixed";
 
   function handleOnClick() {
-    if (!isFixed) {
-      onClick(price);
+    if (!isFixed && !isDisabled) {
+      onClick(id, price);
     }
   }
 
@@ -29,9 +32,9 @@ function Perk(props: props) {
   return (
     <Box
       onClick={handleOnClick}
-      backgroundColor={bgColor}
+      backgroundColor={isDisabled ? "rgba(0,0,0,0.1)" : bgColor}
       padding="4"
-      cursor={isFixed ? "normal" : "pointer"}
+      cursor={isFixed || isDisabled ? "normal" : "pointer"}
       borderRadius="md"
       {...rest}
     >

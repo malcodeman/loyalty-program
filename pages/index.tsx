@@ -22,12 +22,19 @@ function Home(props: props) {
   const [balance, setBalance] = React.useState(
     user?.properties.balance.number || 0
   );
+  const [boughtPerks, setBoughtPerks] = React.useState(
+    user?.properties.perks.relation || []
+  );
 
-  async function handleBuyPerk(price: number) {
+  async function handleBuyPerk(id: string, price: number) {
     const nextBalance = balance - price;
+    const nextRelation = [...boughtPerks, { id }];
     const properties = {
       balance: {
         number: nextBalance,
+      },
+      perks: {
+        relation: nextRelation,
       },
     };
     const request = await fetch(`/api/pages/${user?.id}`, {
@@ -42,12 +49,14 @@ function Home(props: props) {
     });
     const content: {
       properties: {
+        perks: { relation: { id: string }[] };
         balance: {
           number: number;
         };
       };
     } = await request.json();
     setBalance(content.properties.balance.number);
+    setBoughtPerks(content.properties.perks.relation);
   }
 
   if (!session) {
@@ -65,19 +74,25 @@ function Home(props: props) {
         <Container maxW="container.xl">
           <SimpleGrid minChildWidth="277px" spacing={4}>
             {R.map((item) => {
+              const id = item.id;
               const name = item.properties.name.title[0].plain_text;
               const description =
                 item.properties.description.rich_text[0].plain_text;
               const type = item.properties.type.select.name;
               const price = item.properties.price.number;
+              const isDisabled = Boolean(
+                R.find((item) => R.equals(item.id, id), boughtPerks)
+              );
               return (
                 <Perk
                   onClick={handleBuyPerk}
-                  key={name}
+                  key={id}
+                  id={id}
                   name={name}
                   description={description}
                   type={type}
                   price={price}
+                  isDisabled={isDisabled}
                 />
               );
             }, perks.results)}

@@ -1,5 +1,6 @@
 export type PERKS = {
   results: {
+    id: string;
     properties: {
       name: {
         title: {
@@ -32,6 +33,11 @@ export type USER = {
     };
     balance: {
       number: number;
+    };
+    perks: {
+      relation: {
+        id: string;
+      }[];
     };
   };
 };
