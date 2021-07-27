@@ -37,11 +37,18 @@ function Header(props: props) {
     <Box as="header" paddingY="2" boxShadow={boxShadow}>
       <Container maxW="container.xl">
         <Flex justifyContent="space-between" alignItems="center">
-          <Link href="/">
-            <a>
-              <Text>Marketplace</Text>
-            </a>
-          </Link>
+          <Flex>
+            <Link href="/">
+              <a>
+                <Text mr="4">Marketplace</Text>
+              </a>
+            </Link>
+            <Link href="/stats">
+              <a>
+                <Text mr="4">Stats</Text>
+              </a>
+            </Link>
+          </Flex>
           <Flex alignItems="center">
             <Text mr="4">
               Balance:{" "}

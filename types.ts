@@ -34,10 +34,20 @@ export type USER = {
     balance: {
       number: number;
     };
+    start_date: {
+      date: {
+        start: string;
+      };
+    };
     perks: {
       relation: {
         id: string;
       }[];
+    };
+    total_cost: {
+      rollup: {
+        number: number;
+      };
     };
   };
 };
