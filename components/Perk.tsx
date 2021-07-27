@@ -60,7 +60,7 @@ function Perk(props: props) {
   function getStatus() {
     if (isLoading) {
       return <Spinner position="absolute" left="-2" top="2" />;
-    } else if (isBought) {
+    } else if (isFixed || isBought) {
       return (
         <Box
           position="absolute"

@@ -43,7 +43,12 @@ function Header(props: props) {
             </a>
           </Link>
           <Flex alignItems="center">
-            <Text mr="4">Balance: {utils.formatNumber(balance)}</Text>
+            <Text mr="4">
+              Balance:{" "}
+              <Text as="span" fontWeight="bold">
+                {utils.formatNumber(balance)}
+              </Text>
+            </Text>
             <Box mr="4" cursor="pointer">
               {colorMode === "dark" ? (
                 <Moon onClick={toggleColorMode} />
