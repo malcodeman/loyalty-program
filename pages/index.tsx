@@ -3,6 +3,8 @@ import * as R from "ramda";
 import React from "react";
 import { getProviders, getSession } from "next-auth/client";
 import { GetServerSideProps } from "next";
+import { useMutation } from "react-query";
+import axios from "axios";
 
 import { PERKS, SESSION, USER, PROVIDERS } from "../types";
 import api from "../lib/api";
@@ -25,6 +27,24 @@ function Home(props: props) {
   const [boughtPerks, setBoughtPerks] = React.useState(
     user?.properties.perks.relation || []
   );
+  const updatePageMutation = useMutation(
+    (nextProperties: {
+      properties: {
+        perks: {
+          relation: {
+            id: string;
+          }[];
+        };
+      };
+    }) => axios.post(`/api/pages/${user?.id}`, nextProperties),
+    {
+      onSuccess: (data) => {
+        const content = data.data;
+        setBalance(content.properties.balance.number);
+        setBoughtPerks(content.properties.perks.relation);
+      },
+    }
+  );
 
   async function handleBuyPerk(id: string, price: number) {
     const nextBalance = balance - price;
@@ -37,26 +57,7 @@ function Home(props: props) {
         relation: nextRelation,
       },
     };
-    const request = await fetch(`/api/pages/${user?.id}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        properties,
-      }),
-    });
-    const content: {
-      properties: {
-        perks: { relation: { id: string }[] };
-        balance: {
-          number: number;
-        };
-      };
-    } = await request.json();
-    setBalance(content.properties.balance.number);
-    setBoughtPerks(content.properties.perks.relation);
+    updatePageMutation.mutate({ properties });
   }
 
   if (!session) {
@@ -80,9 +81,19 @@ function Home(props: props) {
                 item.properties.description.rich_text[0].plain_text;
               const type = item.properties.type.select.name;
               const price = item.properties.price.number;
-              const isDisabled = Boolean(
+              const isBought = Boolean(
                 R.find((item) => R.equals(item.id, id), boughtPerks)
               );
+              const isDisabled = price > balance;
+              const isLoading =
+                updatePageMutation.isLoading &&
+                R.equals(
+                  R.last(
+                    updatePageMutation.variables?.properties.perks.relation ||
+                      []
+                  )?.id,
+                  id
+                );
               return (
                 <Perk
                   onClick={handleBuyPerk}
@@ -93,6 +104,8 @@ function Home(props: props) {
                   type={type}
                   price={price}
                   isDisabled={isDisabled}
+                  isBought={isBought}
+                  isLoading={isLoading}
                 />
               );
             }, perks.results)}
