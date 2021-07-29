@@ -63,3 +63,18 @@ export type PROVIDERS = {
     type: string;
   };
 };
+export type ACHIEVEMENTS = {
+  results: {
+    id: string;
+    properties: {
+      name: {
+        title: {
+          plain_text: string;
+        }[];
+      };
+      price: {
+        number: number;
+      };
+    };
+  }[];
+};

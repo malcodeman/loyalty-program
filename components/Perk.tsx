@@ -38,7 +38,7 @@ function Perk(props: props) {
     isLoading,
     ...rest
   } = props;
-  const bgColor = useColorModeValue("#eeeeee", "#292929");
+  const bgColor = useColorModeValue("#eeeeee", "#131720");
   const disabledBgColor = useColorModeValue("#f6f6f6", "#141414");
   const positiveBgColor = useColorModeValue("#e6f2ed", "#10462d");
   const isFixed = type === "Fixed";

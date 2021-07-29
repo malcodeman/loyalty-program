@@ -48,6 +48,11 @@ function Header(props: props) {
                 <Text mr="4">Stats</Text>
               </a>
             </Link>
+            <Link href="/achievements">
+              <a>
+                <Text mr="4">Achievements</Text>
+              </a>
+            </Link>
           </Flex>
           <Flex alignItems="center">
             <Text mr="4">

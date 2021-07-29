@@ -29,7 +29,7 @@ const gridTemplateAreas = {
 function Stats(props: props) {
   const { user, session } = props;
   const balance = user?.properties.balance.number || 0;
-  const bgColor = useColorModeValue("#eeeeee", "#292929");
+  const bgColor = useColorModeValue("#eeeeee", "#131720");
   const activePerks = user.properties.perks.relation.length;
   const totalCost = user.properties.total_cost.rollup.number;
   const startDate = user.properties.start_date.date.start;

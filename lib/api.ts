@@ -64,11 +64,23 @@ async function updatePage(pageId: string, properties: {}) {
   }
 }
 
+async function queryDatabase(databaseId: string) {
+  try {
+    const response = await notion.databases.query({
+      database_id: databaseId,
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const defaultExport = {
   getPerks,
   getUser,
   getPage,
   updatePage,
+  queryDatabase,
 };
 
 export default defaultExport;
