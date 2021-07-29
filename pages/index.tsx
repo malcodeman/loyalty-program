@@ -1,4 +1,4 @@
-import { Box, Container, SimpleGrid } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import * as R from "ramda";
 import React from "react";
 import { getProviders, getSession } from "next-auth/client";
@@ -8,7 +8,6 @@ import axios from "axios";
 
 import { PERKS, SESSION, USER, PROVIDERS } from "../types";
 import api from "../lib/api";
-import Header from "../components/Header";
 import Perk from "../components/Perk";
 import SignIn from "../components/SignIn";
 
@@ -17,13 +16,12 @@ type props = {
   user: USER | null;
   session: SESSION;
   providers: PROVIDERS;
+  balance: number;
+  setBalance: (nextBalance: number) => void;
 };
 
 function Home(props: props) {
-  const { perks, user, session, providers } = props;
-  const [balance, setBalance] = React.useState(
-    user?.properties.balance.number || 0
-  );
+  const { perks, user, session, providers, balance, setBalance } = props;
   const [boughtPerks, setBoughtPerks] = React.useState(
     user?.properties.perks.relation || []
   );
@@ -65,54 +63,41 @@ function Home(props: props) {
   }
 
   return (
-    <>
-      <Header
-        balance={balance}
-        email={session.user.email}
-        avatarImage={session.user.image}
-      />
-      <Box as="main" paddingY="4">
-        <Container maxW="container.xl">
-          <SimpleGrid minChildWidth="277px" spacing={4}>
-            {R.map((item) => {
-              const id = item.id;
-              const name = item.properties.name.title[0].plain_text;
-              const description =
-                item.properties.description.rich_text[0].plain_text;
-              const type = item.properties.type.select.name;
-              const price = item.properties.price.number;
-              const isBought = Boolean(
-                R.find((item) => R.equals(item.id, id), boughtPerks)
-              );
-              const isDisabled = price > balance;
-              const isLoading =
-                updatePageMutation.isLoading &&
-                R.equals(
-                  R.last(
-                    updatePageMutation.variables?.properties.perks.relation ||
-                      []
-                  )?.id,
-                  id
-                );
-              return (
-                <Perk
-                  onClick={handleBuyPerk}
-                  key={id}
-                  id={id}
-                  name={name}
-                  description={description}
-                  type={type}
-                  price={price}
-                  isDisabled={isDisabled}
-                  isBought={isBought}
-                  isLoading={isLoading}
-                />
-              );
-            }, perks.results)}
-          </SimpleGrid>
-        </Container>
-      </Box>
-    </>
+    <SimpleGrid minChildWidth="277px" spacing={4}>
+      {R.map((item) => {
+        const id = item.id;
+        const name = item.properties.name.title[0].plain_text;
+        const description = item.properties.description.rich_text[0].plain_text;
+        const type = item.properties.type.select.name;
+        const price = item.properties.price.number;
+        const isBought = Boolean(
+          R.find((item) => R.equals(item.id, id), boughtPerks)
+        );
+        const isDisabled = price > balance;
+        const isLoading =
+          updatePageMutation.isLoading &&
+          R.equals(
+            R.last(
+              updatePageMutation.variables?.properties.perks.relation || []
+            )?.id,
+            id
+          );
+        return (
+          <Perk
+            onClick={handleBuyPerk}
+            key={id}
+            id={id}
+            name={name}
+            description={description}
+            type={type}
+            price={price}
+            isDisabled={isDisabled}
+            isBought={isBought}
+            isLoading={isLoading}
+          />
+        );
+      }, perks.results)}
+    </SimpleGrid>
   );
 }
 
