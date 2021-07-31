@@ -12,6 +12,7 @@ import {
   PopoverBody,
   Button,
   Divider,
+  Spinner,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { LogOut, Sun, Moon } from "react-feather";
@@ -23,10 +24,11 @@ type props = {
   balance: number;
   email: string;
   avatarImage: string;
+  isLoadingBalance: boolean;
 };
 
 function Header(props: props) {
-  const { balance, email, avatarImage } = props;
+  const { balance, email, avatarImage, isLoadingBalance } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   const boxShadow = useColorModeValue(
     "rgba(0, 0, 0, 0.03) 0px 2px 0px 0px",
@@ -55,12 +57,18 @@ function Header(props: props) {
             </Link>
           </Flex>
           <Flex alignItems="center">
-            <Text mr="4">
-              Balance:{" "}
-              <Text as="span" fontWeight="bold">
-                {utils.formatNumber(balance)}
+            <Flex mr="4">
+              <Text as="span" mr="2">
+                Balance:
               </Text>
-            </Text>
+              {isLoadingBalance ? (
+                <Spinner />
+              ) : (
+                <Text as="span" fontWeight="bold">
+                  {utils.formatNumber(balance)}
+                </Text>
+              )}
+            </Flex>
             <Box mr="4" cursor="pointer">
               {colorMode === "dark" ? (
                 <Moon onClick={toggleColorMode} />

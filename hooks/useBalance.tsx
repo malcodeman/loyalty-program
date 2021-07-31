@@ -2,9 +2,13 @@ import React from "react";
 
 import useUser from "./useUser";
 
-function useBalance(): [number, (value: number) => void] {
+function useBalance(): {
+  balance: number;
+  setBalance: (value: number) => void;
+  isLoading: boolean;
+} {
   const [balance, setBalance] = React.useState(0);
-  const { data: user } = useUser();
+  const { data: user, isLoading } = useUser();
 
   React.useEffect(() => {
     if (user) {
@@ -12,7 +16,7 @@ function useBalance(): [number, (value: number) => void] {
     }
   }, [user]);
 
-  return [balance, setBalance];
+  return { balance, setBalance, isLoading };
 }
 
 export default useBalance;

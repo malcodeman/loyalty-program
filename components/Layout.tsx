@@ -13,7 +13,7 @@ type props = {
 function Layout(props: props) {
   const { children } = props;
   const [session] = useSession();
-  const [balance, setBalance] = useBalance();
+  const { balance, setBalance, isLoading } = useBalance();
 
   if (session?.user) {
     return (
@@ -22,6 +22,7 @@ function Layout(props: props) {
           balance={balance}
           email={session.user.email || ""}
           avatarImage={session.user.image || ""}
+          isLoadingBalance={isLoading}
         />
         <Box as="main" paddingY="4">
           <Container maxW="container.xl">
