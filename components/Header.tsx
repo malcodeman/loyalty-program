@@ -14,11 +14,12 @@ import {
   Divider,
   Spinner,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import { LogOut, Sun, Moon } from "react-feather";
 import { signOut } from "next-auth/client";
 
 import utils from "../lib/utils";
+
+import NavLink from "./NavLink";
 
 type props = {
   balance: number;
@@ -40,21 +41,15 @@ function Header(props: props) {
       <Container maxW="container.xl">
         <Flex justifyContent="space-between" alignItems="center">
           <Flex>
-            <Link href="/">
-              <a>
-                <Text mr="4">Marketplace</Text>
-              </a>
-            </Link>
-            <Link href="/stats">
-              <a>
-                <Text mr="4">Stats</Text>
-              </a>
-            </Link>
-            <Link href="/achievements">
-              <a>
-                <Text mr="4">Achievements</Text>
-              </a>
-            </Link>
+            <NavLink href="/">
+              <Text mr="4">Marketplace</Text>
+            </NavLink>
+            <NavLink href="/stats">
+              <Text mr="4">Stats</Text>
+            </NavLink>
+            <NavLink href="/achievements">
+              <Text mr="4">Achievements</Text>
+            </NavLink>
           </Flex>
           <Flex alignItems="center">
             <Flex mr="4">
