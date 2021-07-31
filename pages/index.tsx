@@ -9,6 +9,7 @@ import { SESSION, PROVIDERS } from "../types";
 
 import Perk from "../components/Perk";
 import SignIn from "../components/SignIn";
+import SkeletonPerk from "../components/SkeletonPerk";
 
 import useUser from "../hooks/useUser";
 import usePerks from "../hooks/usePerks";
@@ -22,7 +23,7 @@ type props = {
 
 function Home(props: props) {
   const { session, providers, balance, setBalance } = props;
-  const { data: perks } = usePerks();
+  const { data: perks, isLoading } = usePerks();
   const { data: user } = useUser();
   const [boughtPerks, setBoughtPerks] = React.useState<{ id: string }[]>([
     { id: "" },
@@ -65,6 +66,7 @@ function Home(props: props) {
 
   return (
     <SimpleGrid minChildWidth="277px" spacing={4}>
+      {isLoading && R.times((number) => <SkeletonPerk key={number} />, 5)}
       {R.map((item) => {
         const id = item.id;
         const name = item.properties.name.title[0].plain_text;
