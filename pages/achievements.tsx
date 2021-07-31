@@ -4,17 +4,10 @@ import { getSession } from "next-auth/client";
 import React from "react";
 import * as R from "ramda";
 
-import { SESSION, ACHIEVEMENTS } from "../types";
-import api from "../lib/api";
-import constants from "../lib/constants";
+import useAchievements from "../hooks/useAchievements";
 
-type props = {
-  session: SESSION;
-  achievements: ACHIEVEMENTS;
-};
-
-function Achievements(props: props) {
-  const { achievements } = props;
+function Achievements() {
+  const { data: achievements } = useAchievements();
   const bgColor = useColorModeValue("#f5f5f5", "#131720");
 
   return (
@@ -48,10 +41,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const achievements = constants.NOTION_DATABASE_ID_ACHIEVEMENTS
-    ? await api.queryDatabase(constants.NOTION_DATABASE_ID_ACHIEVEMENTS)
-    : { results: [] };
-  return { props: { session, achievements } };
+  return { props: {} };
 };
 
 export default Achievements;

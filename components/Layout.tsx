@@ -2,6 +2,8 @@ import { Box, Container } from "@chakra-ui/react";
 import { useSession } from "next-auth/client";
 import React, { JSXElementConstructor } from "react";
 
+import useBalance from "../hooks/useBalance";
+
 import Header from "./Header";
 
 type props = {
@@ -11,7 +13,7 @@ type props = {
 function Layout(props: props) {
   const { children } = props;
   const [session] = useSession();
-  const [balance, setBalance] = React.useState(session?.user.balance || 0);
+  const [balance, setBalance] = useBalance();
 
   if (session?.user) {
     return (

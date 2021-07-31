@@ -4,12 +4,12 @@ import { getSession } from "next-auth/client";
 import React from "react";
 import { format } from "date-fns";
 
-import { USER, SESSION } from "../types";
-import api from "../lib/api";
+import { SESSION } from "../types";
 import utils from "../lib/utils";
 
+import useUser from "../hooks/useUser";
+
 type props = {
-  user: USER;
   session: SESSION;
 };
 
@@ -19,13 +19,16 @@ const gridTemplateAreas = {
 };
 
 function Stats(props: props) {
-  const { user, session } = props;
+  const { session } = props;
+  const { data: user } = useUser();
   const bgColor = useColorModeValue("#eeeeee", "#131720");
-  const activePerks = user.properties.perks.relation.length;
-  const totalCost = user.properties.total_cost?.rollup.number || 0;
-  const startDate = user.properties.start_date?.date.start || new Date();
-  const formatedStartDate = format(new Date(startDate), "MMM d, yyyy");
-  const level = utils.getLevel(new Date(startDate));
+  const activePerks = user?.properties.perks.relation.length;
+  const totalCost = user?.properties.total_cost?.rollup.number;
+  const startDate = user?.properties.start_date?.date.start;
+  const formatedStartDate = startDate
+    ? format(new Date(startDate), "MMM d, yyyy")
+    : "";
+  const level = startDate ? utils.getLevel(new Date(startDate)) : "";
 
   return (
     <Grid
@@ -83,8 +86,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  const user = await api.getUser(session.user.email);
-  return { props: { user, session } };
+  return { props: { session } };
 };
 
 export default Stats;
