@@ -1,13 +1,10 @@
-import {
-  useColorModeValue,
-  Flex,
-  Box,
-  Heading,
-  Button,
-} from "@chakra-ui/react";
+import { useColorModeValue, Flex, Heading, Button } from "@chakra-ui/react";
 import { signIn } from "next-auth/client";
 
 import { PROVIDERS } from "../types";
+
+import Logo from "../icons/Logo";
+import Google from "../icons/Google";
 
 function SignIn(props: { providers: PROVIDERS }) {
   const { providers } = props;
@@ -15,19 +12,24 @@ function SignIn(props: { providers: PROVIDERS }) {
 
   return (
     <Flex minHeight="100vh" alignItems="center" justifyContent="center">
-      <Box
+      <Flex
         backgroundColor={bgColor}
         padding="8"
         borderRadius="md"
-        textAlign="center"
+        flexDirection="column"
+        alignItems="center"
       >
-        <Heading size="lg" mb="2">
+        <Logo size={64} />
+        <Heading size="lg" mb="10">
           Sign in to Loyalty
         </Heading>
-        <Button onClick={() => signIn(providers.google.id)}>
+        <Button
+          onClick={() => signIn(providers.google.id)}
+          leftIcon={<Google size={16} />}
+        >
           Continue with Google
         </Button>
-      </Box>
+      </Flex>
     </Flex>
   );
 }

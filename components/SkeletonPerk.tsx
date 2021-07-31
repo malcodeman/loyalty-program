@@ -23,8 +23,9 @@ function SkeletonPerk() {
         left="-2"
         top="2"
       />
-      <SkeletonText noOfLines={2} size="md" mb="1" borderRadius="md" />
-      <Skeleton height="24px" width="60px" mb="2" />
+      <SkeletonText noOfLines={1} mb="2" width="60%" />
+      <SkeletonText noOfLines={1} mb="2" width="30px" />
+      <Skeleton height="24px" width="60px" mb="4" borderRadius="md" />
       <SkeletonText noOfLines={3} spacing={4} />
     </Box>
   );

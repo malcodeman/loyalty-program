@@ -50,11 +50,11 @@ function Perk(props: props) {
     }
   }
 
-  function getHeading() {
+  function getPrice() {
     if (isFixed) {
-      return name;
+      return "Free";
     }
-    return `${name} - ${price} coins`;
+    return `€${price}`;
   }
 
   function getStatus() {
@@ -112,8 +112,11 @@ function Perk(props: props) {
     >
       {getStatus()}
       <Heading as="h4" size="md" mb="1">
-        {getHeading()}
+        {name}
       </Heading>
+      <Text fontWeight="bold" mb="1" fontSize="lg">
+        {getPrice()}
+      </Text>
       <Tag mb="2">{type}</Tag>
       <Text>{description}</Text>
     </Box>

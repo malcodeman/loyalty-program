@@ -85,7 +85,7 @@ function Header(props: props) {
                     onClick={() => signOut()}
                     justifyContent="flex-start"
                     isFullWidth
-                    leftIcon={<LogOut />}
+                    leftIcon={<LogOut size={16} />}
                   >
                     Log out
                   </Button>

@@ -1,31 +1,25 @@
-import { useColorModeValue, SimpleGrid, Flex } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import React from "react";
 import * as R from "ramda";
 
+import Achievement from "../components/Achievement";
+import SkeletonAchievement from "../components/SkeletonAchievement";
+
 import useAchievements from "../hooks/useAchievements";
 
 function Achievements() {
-  const { data: achievements } = useAchievements();
-  const bgColor = useColorModeValue("#f5f5f5", "#131720");
+  const { data: achievements, isLoading } = useAchievements();
 
   return (
     <SimpleGrid minChildWidth="244px" spacing={4}>
+      {isLoading &&
+        R.times((number) => <SkeletonAchievement key={number} />, 4)}
       {R.map((item) => {
         const name = item.properties.name.title[0].plain_text;
-        return (
-          <Flex
-            backgroundColor={bgColor}
-            key={item.id}
-            padding="4"
-            borderRadius="md"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {name}
-          </Flex>
-        );
+        const price = item.properties.price.number;
+        return <Achievement key={item.id} name={name} price={price} />;
       }, achievements.results)}
     </SimpleGrid>
   );
