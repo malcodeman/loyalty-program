@@ -20,7 +20,7 @@ function Achievement(props: props) {
       {...rest}
     >
       <Text mb="2">{name}</Text>
-      <Text fontWeight="bold">€{price}</Text>
+      <Text fontWeight="bold">{price}€</Text>
     </Flex>
   );
 }

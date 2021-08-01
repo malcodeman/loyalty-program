@@ -90,7 +90,7 @@ function HeaderMobile(props: props) {
                     <Spinner />
                   ) : (
                     <Text as="span" fontWeight="bold">
-                      {utils.formatNumber(balance)}
+                      {utils.formatNumber(balance)}€
                     </Text>
                   )}
                 </Flex>

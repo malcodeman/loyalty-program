@@ -78,3 +78,7 @@ export type ACHIEVEMENTS = {
     };
   }[];
 };
+export type USERS = {
+  has_more: boolean;
+  results: USER[];
+};

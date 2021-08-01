@@ -1,26 +1,37 @@
-import { useColorModeValue, Box, Grid, Text, Avatar } from "@chakra-ui/react";
+import {
+  useColorModeValue,
+  Box,
+  Grid,
+  Text,
+  Avatar,
+  Flex,
+  Skeleton,
+} from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import React from "react";
 import { format } from "date-fns";
+import * as R from "ramda";
 
 import { SESSION } from "../types";
 import utils from "../lib/utils";
 
 import useUser from "../hooks/useUser";
+import useUsers from "../hooks/useUsers";
 
 type props = {
   session: SESSION;
 };
 
 const gridTemplateAreas = {
-  base: `"profile profile profile" "totalActivePerks totalActivePerks totalActivePerks" "totalCost totalCost totalCost"`,
-  md: `"profile totalActivePerks totalCost" "profile . ."`,
+  base: `"profile profile profile" "totalActivePerks totalActivePerks totalActivePerks" "totalCost totalCost totalCost" "employeesByCoinBalance employeesByCoinBalance employeesByCoinBalance"`,
+  md: `"profile totalActivePerks totalCost" "profile employeesByCoinBalance ."`,
 };
 
 function Stats(props: props) {
   const { session } = props;
   const { data: user } = useUser();
+  const { data: users, isLoading: isLoadingUsers } = useUsers();
   const bgColor = useColorModeValue("#eeeeee", "#131720");
   const activePerks = user?.properties.perks.relation.length;
   const totalCost = user?.properties.total_cost?.rollup.number;
@@ -29,6 +40,11 @@ function Stats(props: props) {
     ? format(new Date(startDate), "MMM d, yyyy")
     : "";
   const level = startDate ? utils.getLevel(new Date(startDate)) : "";
+  const sortedUsersByBalance = R.sort((a, b) => {
+    const balanceA = a.properties.balance.number;
+    const balanceB = b.properties.balance.number;
+    return balanceB - balanceA;
+  }, R.slice(0, 5, users.results));
 
   return (
     <Grid
@@ -69,8 +85,32 @@ function Stats(props: props) {
         padding="4"
         borderRadius="md"
       >
-        <Text mb="2">Total Cost</Text>
-        <Text fontWeight="bold">€{totalCost}</Text>
+        <Text mb="2">Total Perk Cost</Text>
+        <Text fontWeight="bold">{totalCost}€</Text>
+      </Box>
+      <Box
+        backgroundColor={bgColor}
+        gridArea="employeesByCoinBalance"
+        padding="4"
+        borderRadius="md"
+      >
+        <Text mb="2">Employees by coin balance</Text>
+        {isLoadingUsers ? (
+          <Skeleton height="120px" />
+        ) : (
+          R.map((item) => {
+            const email = item.properties.email.title[0].plain_text;
+            const balance = item.properties.balance.number;
+            return (
+              <Flex key={email} justifyContent="space-between">
+                <Text>{R.split("@", email)[0]}</Text>
+                <Text as="span" fontWeight="bold">
+                  {utils.formatNumber(balance)}€
+                </Text>
+              </Flex>
+            );
+          }, sortedUsersByBalance)
+        )}
       </Box>
     </Grid>
   );

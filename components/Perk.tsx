@@ -54,7 +54,7 @@ function Perk(props: props) {
     if (isFixed) {
       return "Free";
     }
-    return `€${price}`;
+    return `${price}€`;
   }
 
   function getStatus() {
