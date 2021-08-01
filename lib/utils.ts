@@ -18,9 +18,12 @@ function getLevel(startDate: Date) {
   return "Newbie";
 }
 
+const isBrowser = typeof window !== "undefined";
+
 const defaultExport = {
   formatNumber,
   getLevel,
+  isBrowser,
 };
 
 export default defaultExport;

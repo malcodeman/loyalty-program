@@ -3,10 +3,12 @@ import { useSession } from "next-auth/client";
 import React, { JSXElementConstructor } from "react";
 import { useMedia } from "react-use";
 
-import useBalance from "../hooks/useBalance";
+import utils from "../lib/utils";
 
 import Header from "./Header";
 import HeaderMobile from "./HeaderMobile";
+
+import useBalance from "../hooks/useBalance";
 
 type props = {
   children: React.ReactElement<any, string | JSXElementConstructor<any>>;
@@ -25,14 +27,21 @@ function Layout(props: props) {
     isLoadingBalance: isLoading,
   };
 
+  function renderHeader() {
+    if (utils.isBrowser) {
+      return isWide ? (
+        <Header {...headerProps} />
+      ) : (
+        <HeaderMobile {...headerProps} />
+      );
+    }
+    return <></>;
+  }
+
   if (session?.user) {
     return (
       <>
-        {isWide ? (
-          <Header {...headerProps} />
-        ) : (
-          <HeaderMobile {...headerProps} />
-        )}
+        {renderHeader()}
         <Box as="main" paddingY="4" marginBottom={["64px", "64px", 0]}>
           <Container maxW="container.xl">
             {React.cloneElement(children, { balance, setBalance })}
