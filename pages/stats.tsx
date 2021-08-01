@@ -5,7 +5,7 @@ import {
   Text,
   Avatar,
   Flex,
-  Skeleton,
+  SkeletonText,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
@@ -30,7 +30,7 @@ const gridTemplateAreas = {
 
 function Stats(props: props) {
   const { session } = props;
-  const { data: user } = useUser();
+  const { data: user, isLoading: isLoadingUser } = useUser();
   const { data: users, isLoading: isLoadingUsers } = useUsers();
   const bgColor = useColorModeValue("#eeeeee", "#131720");
   const activePerks = user?.properties.perks.relation.length;
@@ -77,7 +77,11 @@ function Stats(props: props) {
         borderRadius="md"
       >
         <Text mb="2">Total Active Perks</Text>
-        <Text fontWeight="bold">{activePerks}</Text>
+        {isLoadingUser ? (
+          <SkeletonText noOfLines={1} width="20%" />
+        ) : (
+          <Text fontWeight="bold">{activePerks}</Text>
+        )}
       </Box>
       <Box
         backgroundColor={bgColor}
@@ -86,7 +90,11 @@ function Stats(props: props) {
         borderRadius="md"
       >
         <Text mb="2">Total Perk Cost</Text>
-        <Text fontWeight="bold">{totalCost}€</Text>
+        {isLoadingUser ? (
+          <SkeletonText noOfLines={1} width="20%" />
+        ) : (
+          <Text fontWeight="bold">{totalCost}€</Text>
+        )}
       </Box>
       <Box
         backgroundColor={bgColor}
@@ -96,7 +104,7 @@ function Stats(props: props) {
       >
         <Text mb="2">Employees by coin balance</Text>
         {isLoadingUsers ? (
-          <Skeleton height="120px" />
+          <SkeletonText noOfLines={5} />
         ) : (
           R.map((item) => {
             const email = item.properties.email.title[0].plain_text;
