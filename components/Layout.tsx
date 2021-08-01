@@ -1,7 +1,7 @@
 import { Box, Container } from "@chakra-ui/react";
 import { useSession } from "next-auth/client";
 import React, { JSXElementConstructor } from "react";
-import { useWindowSize } from "react-use";
+import { useMedia } from "react-use";
 
 import useBalance from "../hooks/useBalance";
 
@@ -16,7 +16,7 @@ function Layout(props: props) {
   const { children } = props;
   const [session] = useSession();
   const { balance, setBalance, isLoading } = useBalance();
-  const { width } = useWindowSize();
+  const isWide = useMedia("(min-width: 768px)");
   const headerProps = {
     balance,
     email: session?.user?.email || "",
@@ -28,7 +28,7 @@ function Layout(props: props) {
   if (session?.user) {
     return (
       <>
-        {width >= 768 ? (
+        {isWide ? (
           <Header {...headerProps} />
         ) : (
           <HeaderMobile {...headerProps} />
