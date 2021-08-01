@@ -42,6 +42,7 @@ function Perk(props: props) {
   const disabledBgColor = useColorModeValue("#f6f6f6", "#141414");
   const positiveBgColor = useColorModeValue("#e6f2ed", "#10462d");
   const isFixed = type === "Fixed";
+  const isSpecial = type === "Special";
   const isClickable = !isFixed && !isDisabled && !isBought && !isLoading;
 
   function handleOnClick() {
@@ -117,7 +118,9 @@ function Perk(props: props) {
       <Text fontWeight="bold" mb="1" fontSize="lg">
         {getPrice()}
       </Text>
-      <Tag mb="2">{type}</Tag>
+      <Tag mb="2" colorScheme={isSpecial ? "red" : "gray"}>
+        {type}
+      </Tag>
       <Text>{description}</Text>
     </Box>
   );
