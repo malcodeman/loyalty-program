@@ -25,11 +25,12 @@ type props = {
   balance: number;
   email: string;
   avatarImage: string;
+  name: string;
   isLoadingBalance: boolean;
 };
 
 function Header(props: props) {
-  const { balance, email, avatarImage, isLoadingBalance } = props;
+  const { balance, email, avatarImage, name, isLoadingBalance } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   const boxShadow = useColorModeValue(
     "rgba(0, 0, 0, 0.03) 0px 2px 0px 0px",
@@ -76,7 +77,7 @@ function Header(props: props) {
                 <Avatar
                   cursor="pointer"
                   size="md"
-                  name="Dan Abrahmov"
+                  name={name}
                   src={avatarImage}
                 />
               </PopoverTrigger>
