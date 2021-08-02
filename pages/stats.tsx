@@ -1,11 +1,4 @@
-import {
-  useColorModeValue,
-  Box,
-  Grid,
-  Text,
-  Flex,
-  SkeletonText,
-} from "@chakra-ui/react";
+import { Box, Grid, Text, Flex, SkeletonText } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import React from "react";
@@ -19,6 +12,7 @@ import EmployeesByBalanceCard from "../components/EmployeesByBalanceCard";
 
 import useUser from "../hooks/useUser";
 import useUsers from "../hooks/useUsers";
+import useBoxShadow from "../hooks/useBoxShadow";
 
 type props = {
   session: SESSION;
@@ -34,7 +28,7 @@ function Stats(props: props) {
   const { session } = props;
   const { data: user, isLoading: isLoadingUser } = useUser();
   const { data: users, isLoading: isLoadingUsers } = useUsers();
-  const bgColor = useColorModeValue("#eeeeee", "#131720");
+  const boxShadow = useBoxShadow();
   const activePerks = user?.properties.perks.relation.length;
   const totalCost = user?.properties.total_cost?.rollup.number || 0;
   const startDate = user?.properties.start_date?.date.start
@@ -48,7 +42,7 @@ function Stats(props: props) {
       gap={4}
     >
       <Box
-        backgroundColor={bgColor}
+        boxShadow={boxShadow}
         gridArea="profile"
         padding="4"
         borderRadius="md"
@@ -62,7 +56,7 @@ function Stats(props: props) {
         />
       </Box>
       <Box
-        backgroundColor={bgColor}
+        boxShadow={boxShadow}
         gridArea="totalActivePerks"
         padding="4"
         borderRadius="md"
@@ -75,7 +69,7 @@ function Stats(props: props) {
         )}
       </Box>
       <Box
-        backgroundColor={bgColor}
+        boxShadow={boxShadow}
         gridArea="totalCost"
         padding="4"
         borderRadius="md"
@@ -88,7 +82,7 @@ function Stats(props: props) {
         )}
       </Box>
       <Flex
-        backgroundColor={bgColor}
+        boxShadow={boxShadow}
         gridArea="currentProgress"
         padding="4"
         borderRadius="md"
@@ -99,7 +93,7 @@ function Stats(props: props) {
         <CircularProgressCard startDate={startDate} isLoading={isLoadingUser} />
       </Flex>
       <Box
-        backgroundColor={bgColor}
+        boxShadow={boxShadow}
         gridArea="employeesByCoinBalance"
         padding="4"
         borderRadius="md"

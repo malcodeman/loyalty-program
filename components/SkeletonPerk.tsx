@@ -1,17 +1,13 @@
-import {
-  useColorModeValue,
-  Box,
-  SkeletonCircle,
-  SkeletonText,
-  Skeleton,
-} from "@chakra-ui/react";
+import { Box, SkeletonCircle, SkeletonText, Skeleton } from "@chakra-ui/react";
+
+import useBoxShadow from "../hooks/useBoxShadow";
 
 function SkeletonPerk() {
-  const bgColor = useColorModeValue("#eeeeee", "#131720");
+  const boxShadow = useBoxShadow();
 
   return (
     <Box
-      backgroundColor={bgColor}
+      boxShadow={boxShadow}
       padding="4"
       borderRadius="md"
       position="relative"
@@ -26,7 +22,8 @@ function SkeletonPerk() {
       <SkeletonText noOfLines={1} mb="2" width="60%" />
       <SkeletonText noOfLines={1} mb="2" width="30px" />
       <Skeleton height="24px" width="60px" mb="4" borderRadius="md" />
-      <SkeletonText noOfLines={3} spacing={4} />
+      <SkeletonText noOfLines={3} mb="6" />
+      <Skeleton height="40px" width="100%" borderRadius="md" />
     </Box>
   );
 }

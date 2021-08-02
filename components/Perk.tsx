@@ -1,13 +1,8 @@
-import {
-  useColorModeValue,
-  Box,
-  Heading,
-  Text,
-  Tag,
-  Spinner,
-} from "@chakra-ui/react";
+import { Box, Heading, Text, Tag, Button, Flex } from "@chakra-ui/react";
 import { Check } from "react-feather";
 import { motion } from "framer-motion";
+
+import useBoxShadow from "../hooks/useBoxShadow";
 
 type props = {
   onClick: (id: string, price: number) => void;
@@ -38,9 +33,7 @@ function Perk(props: props) {
     isLoading,
     ...rest
   } = props;
-  const bgColor = useColorModeValue("#eeeeee", "#131720");
-  const disabledBgColor = useColorModeValue("#f6f6f6", "#141414");
-  const positiveBgColor = useColorModeValue("#e6f2ed", "#10462d");
+  const boxShadow = useBoxShadow();
   const isFixed = type === "Fixed";
   const isSpecial = type === "Special";
   const isClickable = !isFixed && !isDisabled && !isBought && !isLoading;
@@ -59,9 +52,7 @@ function Perk(props: props) {
   }
 
   function getStatus() {
-    if (isLoading) {
-      return <Spinner position="absolute" left="-2" top="2" />;
-    } else if (isFixed || isBought) {
+    if (isFixed || isBought) {
       return (
         <Box
           position="absolute"
@@ -78,51 +69,46 @@ function Perk(props: props) {
     return <></>;
   }
 
-  function getCursor() {
-    if (isDisabled && !isBought) {
-      return "not-allowed";
-    } else if (isLoading) {
-      return "progress";
-    } else if (isFixed || isBought) {
-      return "normal";
-    }
-    return "pointer";
-  }
-
-  function getBackgroundColor() {
-    if (isDisabled && !isBought) {
-      return disabledBgColor;
-    } else if (isFixed || isBought) {
-      return positiveBgColor;
-    }
-    return bgColor;
-  }
-
   return (
-    <Box
-      onClick={handleOnClick}
-      backgroundColor={getBackgroundColor()}
-      cursor={getCursor()}
-      padding="4"
-      borderRadius="md"
-      position="relative"
+    <Flex
       whileHover={isClickable ? "hover" : ""}
       as={motion.div}
       variants={boxVariants}
+      boxShadow={boxShadow}
+      padding="4"
+      borderRadius="md"
+      position="relative"
+      flexDirection="column"
+      justifyContent="space-between"
       {...rest}
     >
-      {getStatus()}
-      <Heading as="h4" size="md" mb="1">
-        {name}
-      </Heading>
-      <Text fontWeight="bold" mb="1" fontSize="lg">
-        {getPrice()}
-      </Text>
-      <Tag mb="2" colorScheme={isSpecial ? "red" : "gray"}>
-        {type}
-      </Tag>
-      <Text>{description}</Text>
-    </Box>
+      <Box mb={isFixed ? 0 : 2}>
+        {getStatus()}
+        <Heading as="h4" size="md" mb="1">
+          {name}
+        </Heading>
+        <Text fontWeight="bold" mb="1" fontSize="lg">
+          {getPrice()}
+        </Text>
+        <Tag mb="2" colorScheme={isSpecial ? "red" : "gray"}>
+          {type}
+        </Tag>
+        <Text>{description}</Text>
+      </Box>
+      {isFixed ? (
+        <></>
+      ) : (
+        <Button
+          onClick={handleOnClick}
+          isDisabled={!isClickable}
+          isLoading={isLoading}
+          colorScheme={isBought ? "green" : "gray"}
+          isFullWidth
+        >
+          {isBought ? "Already bought" : "Buy"}
+        </Button>
+      )}
+    </Flex>
   );
 }
 

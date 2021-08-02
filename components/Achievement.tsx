@@ -1,4 +1,6 @@
-import { useColorModeValue, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
+
+import useBoxShadow from "../hooks/useBoxShadow";
 
 type props = {
   name: string;
@@ -7,11 +9,11 @@ type props = {
 
 function Achievement(props: props) {
   const { name, price, ...rest } = props;
-  const bgColor = useColorModeValue("#eeeeee", "#131720");
+  const boxShadow = useBoxShadow();
 
   return (
     <Flex
-      backgroundColor={bgColor}
+      boxShadow={boxShadow}
       padding="4"
       borderRadius="md"
       justifyContent="center"
