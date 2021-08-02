@@ -20,6 +20,7 @@ import { signOut } from "next-auth/client";
 import utils from "../lib/utils";
 
 import NavLink from "./NavLink";
+import Logo from "../icons/Logo";
 
 type props = {
   balance: number;
@@ -27,10 +28,11 @@ type props = {
   avatarImage: string;
   name: string;
   isLoadingBalance: boolean;
+  onOpen: () => void;
 };
 
 function HeaderMobile(props: props) {
-  const { balance, email, avatarImage, name, isLoadingBalance } = props;
+  const { balance, email, avatarImage, name, isLoadingBalance, onOpen } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   const boxShadow = useColorModeValue(
     "rgba(0, 0, 0, 0.03) 0px -2px 0px 0px",
@@ -95,6 +97,15 @@ function HeaderMobile(props: props) {
                   )}
                 </Flex>
                 <Divider marginY="2" />
+                <Button
+                  onClick={onOpen}
+                  isFullWidth
+                  justifyContent="flex-start"
+                  mb="2"
+                  leftIcon={<Logo size={16} />}
+                >
+                  Request coins
+                </Button>
                 <Button
                   onClick={() => toggleColorMode()}
                   justifyContent="flex-start"

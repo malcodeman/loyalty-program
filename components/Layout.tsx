@@ -1,4 +1,4 @@
-import { Box, Container } from "@chakra-ui/react";
+import { useDisclosure, Box, Container } from "@chakra-ui/react";
 import { useSession } from "next-auth/client";
 import React, { JSXElementConstructor } from "react";
 import { useMedia } from "react-use";
@@ -7,6 +7,7 @@ import utils from "../lib/utils";
 
 import Header from "./Header";
 import HeaderMobile from "./HeaderMobile";
+import RequestCoinModal from "./RequestCoinsModal";
 
 import useBalance from "../hooks/useBalance";
 
@@ -19,12 +20,14 @@ function Layout(props: props) {
   const [session] = useSession();
   const { balance, setBalance, isLoading } = useBalance();
   const isWide = useMedia("(min-width: 768px)");
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const headerProps = {
     balance,
     email: session?.user?.email || "",
     avatarImage: session?.user?.image || "",
     name: session?.user?.name || "",
     isLoadingBalance: isLoading,
+    onOpen,
   };
 
   function renderHeader() {
@@ -47,6 +50,7 @@ function Layout(props: props) {
             {React.cloneElement(children, { balance, setBalance })}
           </Container>
         </Box>
+        <RequestCoinModal isOpen={isOpen} onClose={onClose} />
       </>
     );
   }

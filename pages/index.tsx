@@ -51,7 +51,7 @@ function Home(props: props) {
     };
     try {
       setIsLoadingId(id);
-      const data = await axios.post(`/api/pages/${user?.id}`, body);
+      const data = await axios.patch(`/api/pages/${user?.id}`, body);
       const content = data.data;
       setBalance(content.properties.balance.number);
       setBoughtPerks(content.properties.perks.relation);
