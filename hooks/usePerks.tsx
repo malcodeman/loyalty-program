@@ -12,7 +12,7 @@ function usePerks(): {
   isError: boolean;
 } {
   const { data, error } = useSWR(
-    `/api/database/${constants.NOTION_DATABASE_ID_PERKS}`,
+    `/api/databases/${constants.NOTION_DATABASE_ID_PERKS}`,
     fetcher
   );
 

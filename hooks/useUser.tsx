@@ -30,7 +30,7 @@ function useUser(): {
   const email = session?.user?.email;
   const { data, error } = useSWR(
     email
-      ? [`/api/database/${constants.NOTION_DATABASE_ID_USERS}`, email]
+      ? [`/api/databases/${constants.NOTION_DATABASE_ID_USERS}`, email]
       : null,
     fetcher
   );

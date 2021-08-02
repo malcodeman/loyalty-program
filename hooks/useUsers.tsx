@@ -12,7 +12,7 @@ function useUsers(): {
   isError: boolean;
 } {
   const { data, error } = useSWR(
-    `/api/database/${constants.NOTION_DATABASE_ID_USERS}`,
+    `/api/databases/${constants.NOTION_DATABASE_ID_USERS}`,
     fetcher
   );
   return {

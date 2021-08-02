@@ -1,4 +1,4 @@
-import { SimpleGrid } from "@chakra-ui/react";
+import { useToast, SimpleGrid } from "@chakra-ui/react";
 import * as R from "ramda";
 import React from "react";
 import { getProviders, getSession } from "next-auth/client";
@@ -29,6 +29,7 @@ function Home(props: props) {
     { id: "" },
   ]);
   const [isLoadingId, setIsLoadingId] = React.useState("");
+  const toast = useToast();
 
   React.useEffect(() => {
     if (user) {
@@ -53,8 +54,21 @@ function Home(props: props) {
       setIsLoadingId(id);
       const data = await axios.patch(`/api/pages/${user?.id}`, body);
       const content = data.data;
+      toast({
+        description: "Perk bought!",
+        status: "success",
+        duration: 6000,
+        isClosable: true,
+      });
       setBalance(content.properties.balance.number);
       setBoughtPerks(content.properties.perks.relation);
+    } catch {
+      toast({
+        description: "Something went wrong, please try again later.",
+        status: "error",
+        duration: 6000,
+        isClosable: true,
+      });
     } finally {
       setIsLoadingId("");
     }
