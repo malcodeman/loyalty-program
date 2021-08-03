@@ -82,3 +82,38 @@ export type USERS = {
   has_more: boolean;
   results: USER[];
 };
+export type REQUESTS = {
+  results: {
+    id: string;
+    properties: {
+      award: {
+        rollup: {
+          array: {
+            number: string;
+          }[];
+        };
+      };
+      description: {
+        rich_text: {
+          plain_text: string;
+        }[];
+      };
+      perk_name: {
+        rollup: {
+          array: {
+            title: {
+              plain_text: string;
+            }[];
+          }[];
+        };
+      };
+      status: {
+        select: {
+          color: string;
+          id: string;
+          name: string;
+        };
+      };
+    };
+  }[];
+};
