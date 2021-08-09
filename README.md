@@ -7,6 +7,21 @@ Loyalty and Engagement program web app, powered by Notion as a database.
 
 ![Screenshot](docs/screenshot.png)
 
+## Getting started
+
+`.env.local`
+
+```
+NOTION_KEY = KEY
+GOOGLE_CLIENT_ID = ID
+GOOGLE_CLIENT_SECRET = SECRET
+```
+
+```
+yarn install
+yarn dev
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
