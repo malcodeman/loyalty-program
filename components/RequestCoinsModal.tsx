@@ -26,6 +26,7 @@ import constants from "../lib/constants";
 
 import useAchievements from "../hooks/useAchievements";
 import useUser from "../hooks/useUser";
+import useRequests from "../hooks/useRequests";
 
 type props = {
   isOpen: boolean;
@@ -39,6 +40,7 @@ function RequestCoinModal(props: props) {
   const { data: achievements, isLoading: isLoadingAchievements } =
     useAchievements();
   const { data: user } = useUser();
+  const { revalidate: revalidateRequests } = useRequests();
   const [session] = useSession();
   const toast = useToast();
 
@@ -83,6 +85,7 @@ function RequestCoinModal(props: props) {
     try {
       setIsLoading(true);
       await axios.post(`/api/pages`, body);
+      await revalidateRequests();
       toast({
         description: "Coins requested!",
         status: "success",

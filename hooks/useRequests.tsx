@@ -26,10 +26,11 @@ function useRequests(): {
   data: REQUESTS;
   isLoading: boolean;
   isError: boolean;
+  revalidate: () => Promise<boolean>;
 } {
   const [session] = useSession();
   const email = session?.user?.email;
-  const { data, error } = useSWR(
+  const { data, error, revalidate } = useSWR(
     email
       ? [`/api/databases/${constants.NOTION_DATABASE_ID_REQUESTS}`, email]
       : null,
@@ -40,6 +41,7 @@ function useRequests(): {
     data: data || { results: [] },
     isLoading: !error && !data,
     isError: error,
+    revalidate,
   };
 }
 
